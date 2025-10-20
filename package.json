@@ -1,18 +1,21 @@
 {
-    "name": "png-to-gif-converter-vercel",
+    "name": "png-to-gif-converter",
     "version": "1.0.0",
-    "description": "PNG to GIF converter for Vercel",
-    "main": "server.js",
+    "description": "",
+    "main": "api/server.js",
     "scripts": {
-      "start": "node server.js"
+        "start": "node api/server.js"
     },
+    "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
-      "@vercel/kv": "^1.0.1",
-      "express": "^4.18.2",
-      "multer": "^1.4.5-lts.1",
-      "sharp": "^0.33.1",
-      "uuid": "^9.0.1"
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.21.2",
+        "jsonwebtoken": "^9.0.2",
+        "multer": "^1.4.5-lts.1",
+        "sharp": "^0.32.6",
+        "uuid": "^9.0.1"
     }
-  }
+}

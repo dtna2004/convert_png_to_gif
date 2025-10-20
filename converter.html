@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển PNG sang GIF</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Chuyển đổi PNG sang GIF</h1>
+        <p>Chọn một file ảnh PNG để bắt đầu.</p>
+        <input type="file" id="image-upload" accept="image/png">
+        <button id="convert-btn">Chuyển đổi</button>
+        
+        <div id="loading" class="hidden">Đang xử lý...</div>
+
+        <div id="result" class="hidden">
+            <h2>Kết quả:</h2>
+            <img id="result-image" src="" alt="Ảnh GIF kết quả">
+            <a id="download-link" href="" download="converted.gif">Tải xuống GIF</a>
+        </div>
+    </div>
+    <script src="/js/main.js"></script>
+</body>
+</html>

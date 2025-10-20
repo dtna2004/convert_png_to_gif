@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Quản Trị</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Màn hình đăng nhập -->
+        <div id="admin-login-view">
+            <h1>Đăng nhập Admin</h1>
+            <div class="form-group">
+                <input type="password" id="admin-password" placeholder="Nhập mật khẩu admin...">
+                <button id="admin-login-btn">Đăng nhập</button>
+            </div>
+            <p id="admin-error-message" class="error"></p>
+        </div>
+
+        <!-- Màn hình dashboard -->
+        <div id="admin-dashboard-view" class="hidden">
+            <h1>Bảng điều khiển</h1>
+            <div class="stats">
+                <p>Số người đang online: <strong id="online-users-count">0</strong></p>
+            </div>
+            
+            <div class="key-management">
+                <h2>Quản lý Key</h2>
+                <button id="generate-key-btn">Tạo Key Mới</button>
+                <h3>Danh sách Key đang hoạt động:</h3>
+                <ul id="key-list">
+                    <!-- Danh sách key sẽ được chèn vào đây -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="/js/admin.js"></script>
+</body>
+</html>
