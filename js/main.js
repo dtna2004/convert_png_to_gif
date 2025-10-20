@@ -11,22 +11,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 errorMessage.textContent = 'Vui lòng nhập key.';
                 return;
             }
+            errorMessage.textContent = ''; // Xóa thông báo lỗi cũ
+
             try {
                 const response = await fetch('/api/validate-key', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ key })
                 });
+                
+                const data = await response.json();
 
                 if (response.ok) {
-                    // Lưu key vào sessionStorage để dùng ở trang converter
+                    // THAY ĐỔI: Lưu cả key và userId mà server trả về
                     sessionStorage.setItem('access_key', key);
-                    // Tạo một user ID duy nhất cho session này
-                    sessionStorage.setItem('user_id', `user-${Date.now()}-${Math.random()}`);
+                    sessionStorage.setItem('user_id', data.userId);
                     window.location.href = '/converter.html';
                 } else {
-                    const data = await response.json();
-                    errorMessage.textContent = data.message || 'Key không hợp lệ.';
+                    errorMessage.textContent = data.message || 'Key không hợp lệ hoặc đang được sử dụng.';
                 }
             } catch (error) {
                 errorMessage.textContent = 'Lỗi kết nối đến server.';
@@ -39,18 +41,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const convertBtn = document.getElementById('convert-btn');
 
     if (convertBtn) {
-        // Kiểm tra xem người dùng đã có key hợp lệ chưa
         const userKey = sessionStorage.getItem('access_key');
-        if (!userKey) {
-            window.location.href = '/index.html'; // Nếu chưa, quay về trang đăng nhập
+        const userId = sessionStorage.getItem('user_id');
+
+        if (!userKey || !userId) {
+            window.location.href = '/index.html';
             return;
         }
 
         // Bắt đầu gửi tín hiệu heartbeat
-        const userId = sessionStorage.getItem('user_id');
-        setInterval(() => {
-            navigator.sendBeacon('/api/heartbeat', JSON.stringify({ userId }));
-        }, 15000); // Gửi mỗi 15 giây
+        const sendHeartbeat = () => {
+            // THAY ĐỔI: Gửi cả key và userId
+            const payload = JSON.stringify({ key: userKey, userId: userId });
+            // sendBeacon là cách tốt nhất để gửi request khi người dùng có thể đang rời khỏi trang
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon('/api/heartbeat', payload);
+            } else {
+                fetch('/api/heartbeat', { method: 'POST', body: payload, keepalive: true });
+            }
+        };
+
+        sendHeartbeat(); // Gửi ngay lần đầu tiên
+        setInterval(sendHeartbeat, 15000); // Gửi mỗi 15 giây
 
         convertBtn.addEventListener('click', async () => {
             const file = imageUpload.files[0];
